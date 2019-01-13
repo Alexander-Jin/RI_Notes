@@ -1,4 +1,5 @@
 Notes are based on Sutton's textbook chapter 3, 4, 5, 6, 13, and codes from
+
 https://github.com/dennybritz/reinforcement-learning
 
 ## Model-based
