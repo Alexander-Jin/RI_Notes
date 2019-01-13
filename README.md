@@ -1,3 +1,6 @@
+Notes are based on Sutton's textbook chapter 3, 4, 5, 6, 13, and codes from
+https://github.com/dennybritz/reinforcement-learning
+
 ## Model-based
 When we have an environment model (p(s',r| s,a) is given).
 
