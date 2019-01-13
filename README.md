@@ -72,6 +72,7 @@ Generalized Policy Iteration:
 Generally involve the interaction between policy evaluation and policy improvement.
 
 Value Iteration:
+
 First perform policy evalutation, update V[s] as max_a Q[s][a]. V converges to V\*.
 
 V\*[s] = max_pi V_pi[s] for all s.
@@ -125,14 +126,17 @@ def mc_prediction(policy, env, num_episodes, discount_factor=1.0):
 
     return V
 ```
+On-policy: 
+
+Use the same policy for exploration and learning. Apply epsilon greedy to ensure exploring all states.
+
+Off-policy: 
+
+Use a separate behavior policy for exploratin. Learn a target policy as the optimal policy. Compared with on-pollicy, greater variance and slower converging. 
 
 On-policy first-visit MC control
 
 Update Q values with MC, which gives policy.
-
-On-policy: 
-
-Use the same policy for exploration and learning. Apply epsilon greedy to ensure exploring all states.
 ```
 def make_epsilon_greedy_policy(Q, epsilon, nA):
     def policy_fn(observation):
@@ -178,10 +182,6 @@ def mc_control_epsilon_greedy(env, num_episodes, discount_factor=1.0, epsilon=0.
     return Q, policy
 ```
 Off-policy MC control and importance sampling
-
-Off-policy: 
-
-Use a separate behavior policy for exploratin. Learn a target policy as the optimal policy. Compared with on-pollicy, greater variance and slower converging. 
 
 Importance sampling:
 
