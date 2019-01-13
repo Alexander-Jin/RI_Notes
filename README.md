@@ -1,3 +1,4 @@
+## Model-based
 When we have an environment model (p(s',r| s,a) is given).
 
 Q[s][a] = sum_{s', r} p(s',r| s,a)(r + gamma \* V[s'])
@@ -55,29 +56,38 @@ def policy_improvement(env, discount_factor=1.0):
 ```
 
 Policy Iteration:
+
 Repeat these steps:
+
 	policy evaluation
+
 	policy improvement
 
 Generalized Policy Iteration:
+
 Generally involve the interaction between policy evaluation and policy improvement.
 
 Value Iteration:
 First perform policy evalutation, update V[s] as max_a Q[s][a]. V converges to V\*.
+
 V\*[s] = max_pi V_pi[s] for all s.
+
 Q\*[s][a] = max_pi Q_pi[s][a] for all s and a.
 
 then update policy by selecting max Q[s][a] (use V[s] to compute Q[s][a]).
 
 Two tasks in RI:
+
 Prediction, estimating value function.
+
 Control, finding an optimal policy.
 
-Monte Carlo
+## Monte Carlo
 
 No environment model, learn from experience.
 
 The first-visit MC method for estimation:
+
 Estimates v_{pi}(s) as the average of the returns following first visits to s.
 ```
 def mc_prediction(policy, env, num_episodes, discount_factor=1.0):
@@ -113,8 +123,11 @@ def mc_prediction(policy, env, num_episodes, discount_factor=1.0):
 ```
 
 On-policy first-visit MC control
+
 Update Q values with MC, which gives policy.
+
 On-policy: 
+
 Use the same policy for exploration and learning. Apply epsilon greedy to ensure exploring all states.
 ```
 def make_epsilon_greedy_policy(Q, epsilon, nA):
@@ -163,25 +176,34 @@ def mc_control_epsilon_greedy(env, num_episodes, discount_factor=1.0, epsilon=0.
 Off-policy MC control and importance sampling
 
 Off-policy: 
-Use a separate behavior policy for exploratin. Learn a target policy as the optimal policy.
-Compared with on-pollicy, greater variance and slower converging. 
+
+Use a separate behavior policy for exploratin. Learn a target policy as the optimal policy. Compared with on-pollicy, greater variance and slower converging. 
 
 Importance sampling:
+
 Use the estimation from the behavior policy to get the estimation of the target policy.
 Importance-sampling ratio, the relative probability of the trajectory under the target and behavior policies, is
+
 rho_{t: T - 1} = prod_{k = t}^{T - 1} (pi(A_k|S_k) / b(A_k|S_k))
+
 pi is the target policy, and b is the behavior policy.
 
 Use the returns from behavior policy to estimate value of target policy
+
 V(s) = (sum_t rho_{t:T(t) - 1} G_t)/(sum_t rho_{t:T(t) - 1})
+
 T(t) is the first time of termination following time t, and G_t denote the return after t up through T(t). Each t is a time step that state s is visited.
 
 C_n is the cumulative sum of the weights given to the first n returns.
-C_{n + 1} = C_n + W_{n + 1}
+
+C_{n + 1} = C_n + W_{n + 1},
+
 where W_n = rho_{t_i: T(t_i) - 1}
 
 The update rule for V_n is
-V_{n + 1} = V_n + (W_n / C_n)[G_n - V_n]
+
+V_{n + 1} = V_n + (W_n / C_n)[G_n - V_n].
+
 Here C starts from C_0 = 0, and V starts from a random V_1.
 
 For off-policy MC control, choose a soft policy (positive prob for any state) as the behavior policy.
@@ -235,19 +257,25 @@ def mc_control_importance_sampling(env, num_episodes, discount_factor=1.0):
 ```
 Q, policy = mc_control_importance_sampling(env, num_episodes=500000)
 
-Temporal Difference Learning
+## Temporal Difference Learning
 TD method doesn't wait until the end of the episode to perform update like MC. It updates value after each time step.
+
 V[s_t] += learning_rate \* (R_{t + 1} + gamma \* V[s_{t+1}] - V[s_t])
+
 because 
+
 v(s) = E[R_{t+1} + gamma \* v(S_{t+1}) | S_t = s],
+
 here v(s) is the truth.
 
 TD error is
+
 R_{t + 1} + gamma \* V[s_{t+1}] - V[s_t]
 
 TD methods update their estimates based in part on other estimates. They learn a guess from a guess—they bootstrap.
 
 Sarsa: On-policy TD control
+
 TD_target = R[t+1] + discount_factor \* Q[next_state][next_action]
 ```
 def make_epsilon_greedy_policy(Q, epsilon, nA):
@@ -287,7 +315,9 @@ def sarsa(env, num_episodes, discount_factor=1.0, alpha=0.5, epsilon=0.1):
     return Q
 ```
 Q-learning: Off-policy TD Control
+
 TD_target = R[t+1] + discount_factor \* max(Q[next_state])
+
 Q approximated q\*, which is independent of the policy followed.
 
 ```
@@ -326,4 +356,4 @@ def q_learning(env, num_episodes, discount_factor=1.0, alpha=0.5, epsilon=0.1):
     return Q
 ```
 
-Policy gradient
+## Policy gradient
