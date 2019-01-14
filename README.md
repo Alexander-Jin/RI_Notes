@@ -360,4 +360,13 @@ def q_learning(env, num_episodes, discount_factor=1.0, alpha=0.5, epsilon=0.1):
     return Q
 ```
 
-## Policy gradient
+## Policy Gradient
+Learn the policy parameter theta based on gradient of J(theta), such as average return.
+
+Actor-critic methods approximates both policy (actor) and value (critic).
+
+Policy gradient theorem states that gradient of J does not involve the derivative of the state distribution. It only involves the derivative of the policy.
+
+
+
+
