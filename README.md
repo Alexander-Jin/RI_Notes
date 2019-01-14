@@ -11,7 +11,7 @@ V[s] = sum_{a} pi[s][a] Q[s][a]
 
 pi[s][a] is the prob of selecting action a in state s given by the policy
 
-Policy evalution:
+### Policy evalution:
 ```
 # Update V[s] by summing over V[s']
 V = np.zeros(env.nS)
@@ -28,7 +28,7 @@ while True:
         break
 ```
 
-Policy improvement:
+### Policy improvement:
 ```
 # For each state s, compute Qs by V. Update policy by selecting the highest Q.
 def policy_improvement(env, discount_factor=1.0):
@@ -59,7 +59,7 @@ def policy_improvement(env, discount_factor=1.0):
             return policy, V
 ```
 
-Policy Iteration:
+### Policy Iteration:
 
 Repeat these steps:
 
@@ -71,7 +71,7 @@ Generalized Policy Iteration:
 
 Generally involve the interaction between policy evaluation and policy improvement.
 
-Value Iteration:
+### Value Iteration:
 
 First perform policy evalutation, update V[s] as max_a Q[s][a]. V converges to V\*.
 
@@ -91,7 +91,7 @@ Control, finding an optimal policy.
 
 No environment model, learn from experience.
 
-The first-visit MC method for estimation:
+### First-visit MC method for estimation:
 
 Estimates v_{pi}(s) as the average of the returns following first visits to s.
 ```
@@ -134,7 +134,7 @@ Off-policy:
 
 Use a separate behavior policy for exploratin. Learn a target policy as the optimal policy. Compared with on-pollicy, greater variance and slower converging. 
 
-On-policy first-visit MC control
+### On-policy first-visit MC control
 
 Update Q values with MC, which gives policy.
 ```
@@ -181,7 +181,7 @@ def mc_control_epsilon_greedy(env, num_episodes, discount_factor=1.0, epsilon=0.
     
     return Q, policy
 ```
-Off-policy MC control and importance sampling
+### Off-policy MC control and importance sampling
 
 Importance sampling:
 
@@ -278,7 +278,7 @@ R_{t + 1} + gamma \* V[s_{t+1}] - V[s_t]
 
 TD methods update their estimates based in part on other estimates. They learn a guess from a guess—they bootstrap.
 
-Sarsa: On-policy TD control
+### Sarsa: On-policy TD control
 
 TD_target = R[t+1] + discount_factor \* Q[next_state][next_action]
 ```
@@ -318,7 +318,7 @@ def sarsa(env, num_episodes, discount_factor=1.0, alpha=0.5, epsilon=0.1):
             state = next_state   
     return Q
 ```
-Q-learning: Off-policy TD Control
+### Q-learning: Off-policy TD Control
 
 TD_target = R[t+1] + discount_factor \* max(Q[next_state])
 
@@ -369,12 +369,13 @@ Policy gradient theorem states that gradient of J does not involve the derivativ
 
 grad(J(theta)) = E_{pi}[sum_a q_{pi}(S_t, a) grad(pi(a|S_t, theta))]
 
-MC policy gradient:
+### MC policy gradient:
+
 Repeat this:
 
     Generate an episode
     for each time step:
-        theta += alpha * gamma^t * G * grad(log(pi(A_t|S_t, theta))
+        theta += alpha * gamma^t * G_t * grad(log(pi(A_t|S_t, theta))
 
 
 
